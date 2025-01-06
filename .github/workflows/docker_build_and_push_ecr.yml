@@ -11,6 +11,16 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
+      with:
+        role-to-assume: arn:aws:iam::366085906151:role/Aws-GitHub-Integration-Role
+        aws-region: 'us-east-1'
+        
+    - name: Login to Amazon ECR
+      id: login-pf-aws-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+        
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-nginx-image:$(date +%s)
